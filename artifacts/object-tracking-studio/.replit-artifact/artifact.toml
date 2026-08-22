@@ -1,0 +1,28 @@
+kind = "web"
+previewPath = "/"
+title = "Object Tracking Studio"
+description = "A browser-based computer vision studio for detecting and tracking everyday objects from a webcam or uploaded video, with live bounding boxes, tracking IDs, confidence scores, and session metrics."
+version = "1.0.0"
+id = "artifacts/object-tracking-studio"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 23980
+
+[services.development]
+run = "pnpm --filter @workspace/object-tracking-studio run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/object-tracking-studio", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/object-tracking-studio/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "23980"
+BASE_PATH = "/"
